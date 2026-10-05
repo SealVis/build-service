@@ -2,12 +2,12 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   annotations:
-    build.appstudio.openshift.io/repo: https://github.com/konflux-ci/build-service?rev={{revision}}
+    build.appstudio.openshift.io/repo: https://github.com/SealVis/build-service?rev={{revision}}
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: '3'
     pipelinesascode.tekton.dev/on-cel-expression: |
-      event == "push" && target_branch == "main"
+      event == "incoming" && target_branch == "rebuild"
       && (
         ".tekton/**".pathChanged()
         || "cmd/main.go".pathChanged()
@@ -24,7 +24,7 @@ metadata:
     appstudio.openshift.io/component: build-service
     pipelines.appstudio.openshift.io/type: build
   name: build-service-on-push
-  namespace: rhtap-build-tenant
+  namespace: build-tenant
 spec:
   params:
   - name: git-url
@@ -32,7 +32,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/rhtap-build-tenant/build-service/build-service:{{revision}}
+    value: quay.io/sealvis-workloads/build-tenant/build-service/build-service:{{revision}}
   - name: dockerfile
     value: Dockerfile
   - name: path-context
