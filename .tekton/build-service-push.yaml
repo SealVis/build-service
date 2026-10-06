@@ -43,7 +43,7 @@ spec:
     value: '{"type": "gomod", "path": "."}'
   - name: build-platforms
     values:
-    - x86_64
+    - linux/x86_64
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while maintaining trust after pipeline customization.
